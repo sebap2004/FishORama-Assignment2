@@ -19,19 +19,20 @@ namespace FishORama
         private string textureID;               // Holds a string to identify asset used for this token
         private float xPosition;                // Holds the X coordinate for token position on screen
         private float yPosition;                // Holds the Y coordinate for token position on screen
-        private int xDirection;                 // Holds the direction the token is currently moving - X value should be either -1 (left) or 1 (right)
+        public int xDirection;                 // Holds the direction the token is currently moving - X value should be either -1 (left) or 1 (right)
         private int yDirection;                 // Holds the direction the token is currently moving - Y value should be either -1 (down) or 1 (up)
         private Screen screen;                  // Holds a reference to the screen dimansions (width and height)
         private ITokenManager tokenManager;     // Holds a reference to the TokenManager - for access to ChickenLeg variable
 
         // *** ADD YOUR CLASS VARIABLES HERE *** 
-
+        public int teamNumber;
+        public int fishNumber;
 
 
 
         /// CONSTRUCTOR: OrangeFish Constructor
         /// The elements in the brackets are PARAMETERS, which will be covered later in the course
-        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager)
+        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber)
         {
             // State initialisation (setup) for the object
             textureID = pTextureID;
@@ -41,9 +42,11 @@ namespace FishORama
             yDirection = 1;
             screen = pScreen;
             tokenManager = pTokenManager;
-
+            
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
 
+            teamNumber = pTeamNumber;
+            fishNumber = pFishNumber;
 
 
 

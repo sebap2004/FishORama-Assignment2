@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using FishORamaEngineLibrary;
+using System.Collections.Generic;
 
 namespace FishORama
 {
@@ -24,8 +25,7 @@ namespace FishORama
 
         // *** ADD YOUR CLASS VARIABLES HERE ***
         // Variables to hold fish will be declared here
-
-
+        List<Piranha> piranhaList;
 
 
 
@@ -37,10 +37,9 @@ namespace FishORama
             screen = kernel.Screen;             // Sets the screen variable in Simulation so the screen dimensions are accessible
 
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
-
-
-
-
+            
+            // Piranha List initialisation
+            piranhaList = new List<Piranha>();
         }
 
         /// METHOD: LoadContent - called once at start of program
@@ -50,24 +49,36 @@ namespace FishORama
             // *** ADD YOUR NEW TOKEN CREATION CODE HERE ***
             // Code to create fish tokens and assign to thier variables goes here
             // Remember to insert each token into the kernel
-
-
-
-
-
+            
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < 3)
+                {
+                    Piranha currentFish = new("Piranha1", -300, 150 - (150 * i), screen, tokenManager, 1, i + 1);
+                    piranhaList.Add(currentFish);
+                    kernel.InsertToken(currentFish);
+                }
+                else
+                {
+                    Piranha currentFish = new("Piranha1", 300, 150 - (150 * (i - 3)), screen, tokenManager, 1, i - 2);
+                    currentFish.xDirection = -1;
+                    piranhaList.Add(currentFish);
+                    kernel.InsertToken(currentFish);
+                }
+            }
         }
 
         /// METHOD: Update - called 60 times a second by the FishORama engine when the program is running
         /// Add all tokens so Update is called on them regularly
         public void Update(GameTime gameTime)
         {
-
             // *** ADD YOUR UPDATE CODE HERE ***
             // Each fish object (sitting in a variable) must have Update() called on it here
 
-
-
-
+            foreach (Piranha piranha in piranhaList)
+            {
+                piranha.Update();
+            }
         }
     }
 }
