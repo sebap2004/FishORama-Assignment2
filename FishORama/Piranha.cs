@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FishORamaEngineLibrary;
@@ -11,28 +12,35 @@ namespace FishORama
 {
     /// CLASS: OrangeFish - this class is structured as a FishORama engine Token class
     /// It contains all the elements required to draw a token to screen and update it (for movement etc)
-    class Piranha : IDraw
+    public class Piranha : IDraw
     {
         // CLASS VARIABLES
         // Variables hold the information for the class
         // NOTE - these variables must be present for the class to act as a TOKEN for the FishORama engine
-        private string textureID;               // Holds a string to identify asset used for this token
-        private float xPosition;                // Holds the X coordinate for token position on screen
-        private float yPosition;                // Holds the Y coordinate for token position on screen
+        public string textureID;               // Holds a string to identify asset used for this token
+        public float xPosition;                // Holds the X coordinate for token position on screen
+        public float yPosition;                // Holds the Y coordinate for token position on screen
         public int xDirection;                 // Holds the direction the token is currently moving - X value should be either -1 (left) or 1 (right)
-        private int yDirection;                 // Holds the direction the token is currently moving - Y value should be either -1 (down) or 1 (up)
-        private Screen screen;                  // Holds a reference to the screen dimansions (width and height)
-        private ITokenManager tokenManager;     // Holds a reference to the TokenManager - for access to ChickenLeg variable
+        public int yDirection;                 // Holds the direction the token is currently moving - Y value should be either -1 (down) or 1 (up)
+        public Screen screen;                  // Holds a reference to the screen dimansions (width and height)
+        public ITokenManager tokenManager;     // Holds a reference to the TokenManager - for access to ChickenLeg variable
 
         // *** ADD YOUR CLASS VARIABLES HERE *** 
         public int teamNumber;
         public int fishNumber;
-
-
+        public float yOffset;
+        public float xSpeed;
+        public float ySpeed;
+        public Vector2 idlePosition;
+        public float speed;
+        public bool calcRand;
+        public float angle;
+        public PiranhaBehaviour piranhaBehaviour;
+        private Team team;
 
         /// CONSTRUCTOR: OrangeFish Constructor
         /// The elements in the brackets are PARAMETERS, which will be covered later in the course
-        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber)
+        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber, Team pTeam)
         {
             // State initialisation (setup) for the object
             textureID = pTextureID;
@@ -42,28 +50,28 @@ namespace FishORama
             yDirection = 1;
             screen = pScreen;
             tokenManager = pTokenManager;
-            
+
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
-
-            teamNumber = pTeamNumber;
+            team = pTeam;
             fishNumber = pFishNumber;
-
-
-
-
+            teamNumber = pTeamNumber;
+            if (teamNumber == 2)
+            {
+                xDirection = -1;
+            }
+            idlePosition = new Vector2(pXpos, pYpos);
+            xSpeed = 1;
+            ySpeed = xSpeed;
+            speed = 3;
+            calcRand = true;
+            piranhaBehaviour = new PiranhaBehaviour(this, team);
         }
 
         /// METHOD: Update - will be called repeatedly by the Update loop in Simulation
         /// Write the movement control code here
         public void Update()
         {
-            // *** ADD YOUR MOVEMENT/BEHAVIOUR CODE HERE ***
-
-
-
-
-
-
+            piranhaBehaviour.Update();
         }
 
         /// METHOD: Draw - Called repeatedly by FishORama engine to draw token on screen
