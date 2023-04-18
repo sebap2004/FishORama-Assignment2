@@ -26,9 +26,11 @@ namespace FishORama
         // *** ADD YOUR CLASS VARIABLES HERE ***
         // Variables to hold fish will be declared here
 
-        List<Piranha> piranhaList;
-
-
+        private Team Team1;
+        private Team Team2;
+        private Referee referee;
+        private Random random;
+        private List<Piranha> piranhas;
 
 
         /// CONSTRUCTOR - for the Simulation class - run once only when an object of the Simulation class is INSTANTIATED (created)
@@ -40,9 +42,11 @@ namespace FishORama
 
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
 
-            piranhaList = new List<Piranha>();
-
-
+            Team1 = new Team(1);
+            Team2 = new Team(2);
+            piranhas = new List<Piranha>();
+            referee = new Referee(Team1, Team2);
+            random = new Random();
         }
 
         /// METHOD: LoadContent - called once at start of program
@@ -55,40 +59,70 @@ namespace FishORama
 
             int initXpos;
             int initYpos;
-            
-            
+
             for(int i = 0; i < 6; i++)
             {
                 if (i < 3)
                 {
-                    initXpos = -300;
+                    initXpos = 300;
                     initYpos = 150 - (150 * i);
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i+1);
-                    piranhaList.Add(currentFish);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team2);
+                    Team1.teamMembers.Add(currentFish);
+                    piranhas.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
                 else
                 {
-                    initXpos = 300;
+                    initXpos = -300;
                     initYpos = 150 - (150 * (i-3));
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i-2);
-                    piranhaList.Add(currentFish);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team1);
+                    Team2.teamMembers.Add(currentFish);
+                    piranhas.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
             }
+            
+            PlaceLeg();
+            referee.StartGame();
         }
 
         /// METHOD: Update - called 60 times a second by the FishORama engine when the program is running
         /// Add all tokens so Update is called on them regularly
         public void Update(GameTime gameTime)
         {
-
+            /*
+            if (random.Next(1, 31) == 1)
+            {
+                if (tokenManager.ChickenLeg == null)
+                {
+                    
+                    Console.WriteLine("Placed Leg");
+                }
+            }
+            */
+            
             // *** ADD YOUR UPDATE CODE HERE ***
             // Each fish object (sitting in a variable) must have Update() called on it here
+            
+            foreach (Piranha piranha in piranhas)
+            {
+                piranha.Update();
+            }
+        }
 
-
-
-
+        private void PlaceLeg()
+        {
+            ChickenLeg newChickenLeg = new ChickenLeg("ChickenLeg", 0, 0);
+            tokenManager.SetChickenLeg(newChickenLeg);
+            kernel.InsertToken(newChickenLeg);
+        }
+        private void RemoveChickenLeg()
+        {
+            if (tokenManager.ChickenLeg != null)
+            {
+                kernel.RemoveToken(tokenManager.ChickenLeg);
+                tokenManager.SetChickenLeg(null);
+            }
         }
     }
 }
