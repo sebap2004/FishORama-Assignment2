@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -25,6 +26,7 @@ namespace FishORama
         // *** ADD YOUR CLASS VARIABLES HERE ***
         // Variables to hold fish will be declared here
 
+        List<Piranha> piranhaList;
 
 
 
@@ -38,7 +40,7 @@ namespace FishORama
 
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
 
-
+            piranhaList = new List<Piranha>();
 
 
         }
@@ -51,10 +53,29 @@ namespace FishORama
             // Code to create fish tokens and assign to thier variables goes here
             // Remember to insert each token into the kernel
 
-
-
-
-
+            int initXpos;
+            int initYpos;
+            
+            
+            for(int i = 0; i < 6; i++)
+            {
+                if (i < 3)
+                {
+                    initXpos = -300;
+                    initYpos = 150 - (150 * i);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i+1);
+                    piranhaList.Add(currentFish);
+                    kernel.InsertToken(currentFish);
+                }
+                else
+                {
+                    initXpos = 300;
+                    initYpos = 150 - (150 * (i-3));
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i-2);
+                    piranhaList.Add(currentFish);
+                    kernel.InsertToken(currentFish);
+                }
+            }
         }
 
         /// METHOD: Update - called 60 times a second by the FishORama engine when the program is running

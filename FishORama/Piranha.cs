@@ -25,13 +25,14 @@ namespace FishORama
         private ITokenManager tokenManager;     // Holds a reference to the TokenManager - for access to ChickenLeg variable
 
         // *** ADD YOUR CLASS VARIABLES HERE *** 
-
+        private int teamNumber;
+        private int fishNumber;
 
 
 
         /// CONSTRUCTOR: OrangeFish Constructor
         /// The elements in the brackets are PARAMETERS, which will be covered later in the course
-        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager)
+        public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber)
         {
             // State initialisation (setup) for the object
             textureID = pTextureID;
@@ -43,7 +44,12 @@ namespace FishORama
             tokenManager = pTokenManager;
 
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
-
+            fishNumber = pFishNumber;
+            teamNumber = pTeamNumber;
+            if (teamNumber == 2)
+            {
+                xDirection = -1;
+            }
 
 
 
