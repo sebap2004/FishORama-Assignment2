@@ -156,6 +156,33 @@ namespace FishORamaEngineLibrary
                 Vector2 mousePosition = Mouse.GetState().Position.ToVector2();
                 mousePosition.X -= camera.Transform.Translation.X;
                 mousePosition.Y -= camera.Transform.Translation.Y;
+
+                // Check if click within window
+                if (mousePosition.X < screen.width / 2
+                    && mousePosition.X > (screen.width / 2) * -1
+                    && mousePosition.Y < screen.height / 2
+                    && mousePosition.Y > (screen.height / 2) * -1)
+                {
+                    // Place a new chicken leg at the position of the mouse
+                    ChickenLeg newChickenLeg = new ChickenLeg("ChickenLeg", (int)mousePosition.X, (int)mousePosition.Y);
+                    tokenManager.SetChickenLeg(newChickenLeg);
+                    InsertToken(newChickenLeg);
+                }
+            }
+
+            // Right click to remove chicken leg
+            if (tokenManager.ChickenLeg != null && Mouse.GetState().RightButton == ButtonState.Pressed)
+            {
+                RemoveChickenLeg();
+            }
+
+            // Poll chicken leg if present and check remove flag - remove if true
+            if (tokenManager.ChickenLeg != null)
+            {
+                if (tokenManager.ChickenLeg.RemoveFlag)
+                {
+                    RemoveChickenLeg();
+                }
             }
 
             // Call update on Simulation to run main game loop
@@ -214,8 +241,7 @@ namespace FishORamaEngineLibrary
         /// <summary>
         /// RemoveChickenLeg method - Removes the chicken leg from the game, if it exists
         /// </summary>
-        ///
-        public void RemoveChickenLeg()
+        private void RemoveChickenLeg()
         {
             if (tokenManager.ChickenLeg != null)
             {
@@ -223,7 +249,6 @@ namespace FishORamaEngineLibrary
                 tokenManager.SetChickenLeg(null);
             }
         }
-        
     }
 
     // Bespoke data structure to store screen dimensions

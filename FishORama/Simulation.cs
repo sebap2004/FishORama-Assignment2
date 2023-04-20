@@ -29,7 +29,6 @@ namespace FishORama
         private Team Team1;
         private Team Team2;
         private Referee referee;
-        private Random random;
         private List<Piranha> piranhas;
 
 
@@ -39,14 +38,14 @@ namespace FishORama
         {
             kernel = pKernel;                   // Stores the game engine kernel which is passed to the constructor when this class is created
             screen = kernel.Screen;             // Sets the screen variable in Simulation so the screen dimensions are accessible
-
+            
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
-
+            
             Team1 = new Team(1);
             Team2 = new Team(2);
             piranhas = new List<Piranha>();
             referee = new Referee(Team1, Team2);
-            random = new Random();
+            Referee.LegPlace += PlaceLeg;
         }
 
         /// METHOD: LoadContent - called once at start of program
@@ -90,19 +89,10 @@ namespace FishORama
         /// Add all tokens so Update is called on them regularly
         public void Update(GameTime gameTime)
         {
-            /*
-            if (random.Next(1, 31) == 1)
-            {
-                if (tokenManager.ChickenLeg == null)
-                {
-                    
-                    Console.WriteLine("Placed Leg");
-                }
-            }
-            */
-            
             // *** ADD YOUR UPDATE CODE HERE ***
             // Each fish object (sitting in a variable) must have Update() called on it here
+            
+            referee.Update();
             
             foreach (Piranha piranha in piranhas)
             {
