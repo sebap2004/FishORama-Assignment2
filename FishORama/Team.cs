@@ -7,7 +7,7 @@ public class Team
 {
     public List<Piranha> teamMembers;
     public int TeamScore;
-    private int teamNumber;
+    public int teamNumber;
     
     public delegate void ScoreAdded(int team, int fish);
     public static event ScoreAdded AddedScore;
@@ -23,7 +23,10 @@ public class Team
 
     private void AddScore(int fish)
     {
-        TeamScore++;
-        AddedScore(teamNumber, fish);
+        if (fish == teamNumber)
+        {
+            TeamScore++;
+            AddedScore(teamNumber, fish);
+        }
     }
 }

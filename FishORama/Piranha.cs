@@ -55,7 +55,7 @@ namespace FishORama
             team = pTeam;
             fishNumber = pFishNumber;
             teamNumber = pTeamNumber;
-            if (teamNumber == 2)
+            if (teamNumber == 1)
             {
                 xDirection = -1;
             }

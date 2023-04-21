@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using FishORamaEngineLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,7 +10,7 @@ public class PiranhaBehaviour
 {
     public delegate void AteChicken(int fishNumber);
     public static event AteChicken ChickenAte;
-
+    
     public delegate void TriggerNewGame();
     public static event TriggerNewGame roundTrigger;
 
@@ -34,6 +36,13 @@ public class PiranhaBehaviour
         Movement();
     }
 
+    private Vector2 CalculateDirection(Vector2 startVec, Vector2 endVec)
+    {
+        Vector2 distanceVector = Vector2.Subtract(endVec, startVec);
+        return distanceVector;
+    }
+    
+    
     private void Movement()
     {
         // *** ADD YOUR MOVEMENT/BEHAVIOUR CODE HERE ***
@@ -52,7 +61,7 @@ public class PiranhaBehaviour
                 case (FishState.Chase):
 
 
-                    Vector2 chickenPosition;
+                    Vector2 chickenPosition = new Vector2();
                     Vector2 currentPosition;
                     Vector2 distanceVector;
                     Vector2 directionVector;
@@ -60,23 +69,24 @@ public class PiranhaBehaviour
                     {
                         chickenPosition = new(piranha.tokenManager.ChickenLeg.Position.X, piranha.tokenManager.ChickenLeg.Position.Y);
                         currentPosition = new(piranha.xPosition, piranha.yPosition);
-                        distanceVector = Vector2.Subtract(chickenPosition, currentPosition);
+                        distanceVector = CalculateDirection(currentPosition, chickenPosition);
                         directionVector = Vector2.Normalize(distanceVector);
                         piranha.xPosition += directionVector.X * piranha.speed;
                         piranha.yPosition += directionVector.Y * piranha.speed;
 
-                        if (distanceVector.Length() < 10 && piranha.tokenManager.ChickenLeg != null && !ateAlready)
+                        if (distanceVector.Length() < 100 && piranha.tokenManager.ChickenLeg != null && !ateAlready)
                         {
                             ateAlready = true;
                             SetFishState(FishState.Return);
                             Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} got the leg!");
-                            ChickenAte(piranha.fishNumber);
+                            ChickenAte(team.teamNumber);
                             piranha.tokenManager.RemoveChickenLeg();
                         }
                     }
                     else
                     {
                         SetFishState(FishState.Return);
+                        piranha.textureID = "Piranha2";
                         Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} missed the leg!");
                     }
                     
@@ -99,6 +109,22 @@ public class PiranhaBehaviour
 
                     ateAlready = false;
                     break;
+                case (FishState.Win):
+                    if (team.teamNumber == 1)
+                    {
+                        directionVector =
+                            Vector2.Normalize(CalculateDirection(new Vector2(piranha.xPosition,piranha.yPosition),
+                                new Vector2(piranha.xPosition,piranha.yPosition) + new Vector2(1200, 0)));
+                    }
+                    else
+                    {
+                        directionVector =
+                            Vector2.Normalize(CalculateDirection(new Vector2(piranha.xPosition,piranha.yPosition),
+                                new Vector2(piranha.xPosition,piranha.yPosition) + new Vector2(-1200, 0)));
+                    }
+                    piranha.xPosition += directionVector.X * piranha.speed;
+                    piranha.yPosition += directionVector.Y * piranha.speed;
+                    break;
             }
     }
     
@@ -106,7 +132,8 @@ public class PiranhaBehaviour
     {
         Idle,
         Chase,
-        Return
+        Return,
+        Win
     }
         
     public void SetFishState(FishState pFishState)
@@ -115,16 +142,19 @@ public class PiranhaBehaviour
         {
             case (FishState.Idle):
                 currentState = FishState.Idle;
-                Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} Set To Idle");
+                piranha.textureID = "Piranha1";
                 RoundEnd();
                 break;
             case (FishState.Chase):
                 currentState = FishState.Chase;
-                Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} Set To Chase");
+                piranha.speed = new Random().Next(4, 6);
                 break;
             case (FishState.Return):
                 currentState = FishState.Return;
-                Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} Set To Return");
+                break;
+            case(FishState.Win):
+                currentState = FishState.Win;
+                piranha.speed = 4;
                 break;
         }
     }

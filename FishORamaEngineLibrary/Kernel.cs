@@ -21,7 +21,10 @@ namespace FishORamaEngineLibrary
         private ITokenManager tokenManager;         // Holds a reference to the TokenManager - for access to ChickenLeg variable
         private Camera camera;                      // Every token is drawn in a position relative to this camera
         private Screen screen;                      // Holds screen dimensions (width, height)
-
+        private SpriteFont font;
+        private int score1;
+        private int score2;
+        
         /// PROPERTIES
         public IUpdate Simulation { set => simulation = value; }
         public Screen Screen { get => screen; }
@@ -72,6 +75,7 @@ namespace FishORamaEngineLibrary
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            
 
             // Load each texture into the AssetManager as an Asset
             Asset asset;
@@ -131,6 +135,8 @@ namespace FishORamaEngineLibrary
             Aquarium aquarium = new Aquarium("AquariumBackground", new Vector2(0, 0), assetManager);
             InsertToken(aquarium);
 
+            font = Content.Load<SpriteFont>("Score");
+
             (simulation as ILoadContent).LoadContent(assetManager); // Call the kernel's LoadContent method, for it to create tokens and add them to the game
         }
 
@@ -140,6 +146,12 @@ namespace FishORamaEngineLibrary
         protected override void UnloadContent()
         {
 
+        }
+
+        public void UpdateScoreText(int pScore1, int pScore2)
+        {
+            score1 = pScore1;
+            score2 = pScore2;
         }
 
         /// <summary>
@@ -199,9 +211,9 @@ namespace FishORamaEngineLibrary
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
+            
             // Start a new batch, aligned to the camera at the center of the viewport
-            spriteBatch.Begin(SpriteSortMode.FrontToBack,
+            spriteBatch.Begin(SpriteSortMode.Immediate,
                               null,
                               null,
                               null,
@@ -210,13 +222,14 @@ namespace FishORamaEngineLibrary
                               camera.Transform);
 
             // Call the draw method for each token in drawables, passing the open sprite batch
+            
             foreach (IDraw Token in drawables)
             {
                 Token.Draw(assetManager, spriteBatch);
             }
-
+            spriteBatch.DrawString(font, "Team 1 Score: " + score1, new Vector2(10 - camera.Transform.Translation.X,10 - camera.Transform.Translation.Y),Color.Black);
+            spriteBatch.DrawString(font, "Team 2 Score: " + score2, new Vector2(950 - camera.Transform.Translation.X,10 - camera.Transform.Translation.Y),Color.Black);
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
 

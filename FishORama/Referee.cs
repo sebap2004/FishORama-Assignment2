@@ -59,6 +59,27 @@ public class Referee
 
     void RoundTrigger()
     {
+        if (team1.TeamScore >= 5)
+        {
+            foreach (var fish in Team1Members)
+            {
+                fish.piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Win);
+            }
+
+            Console.WriteLine("Team 1 wins!");
+            return;
+        }
+
+        if (team2.TeamScore >= 5)
+        {
+            foreach (var fish in Team2Members)
+            {
+                fish.piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Win);
+            }
+
+            Console.WriteLine("Team 2 wins!");
+            return;
+        }
         if (_tokenManager.ChickenLeg != null)
         {
             isFighting = true;
@@ -75,7 +96,7 @@ public class Referee
         if (isFighting)
         {return;}
 
-        if (_random.Next(0, 31) == 1)
+        if (_random.Next(0, 101) == 1)
         {
             LegPlace();
             Console.WriteLine("Placed leg");

@@ -30,6 +30,8 @@ namespace FishORama
         private Team Team2;
         private Referee referee;
         private List<Piranha> piranhas;
+        
+        
 
 
         /// CONSTRUCTOR - for the Simulation class - run once only when an object of the Simulation class is INSTANTIATED (created)
@@ -58,30 +60,29 @@ namespace FishORama
 
             int initXpos;
             int initYpos;
-
+            
             for(int i = 0; i < 6; i++)
             {
-                if (i < 3)
+                if (i >= 3)
                 {
-                    initXpos = 300;
-                    initYpos = 150 - (150 * i);
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team2);
+                    initXpos = -300;
+                    initYpos = 150 - (150 * (i-3));
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team1);
                     Team1.teamMembers.Add(currentFish);
                     piranhas.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
                 else
                 {
-                    initXpos = -300;
-                    initYpos = 150 - (150 * (i-3));
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team1);
+                    initXpos = 300;
+                    initYpos = 150 - (150 * i);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team2);
                     Team2.teamMembers.Add(currentFish);
                     piranhas.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
             }
             
-            PlaceLeg();
             referee.StartGame();
         }
 
@@ -93,7 +94,7 @@ namespace FishORama
             // Each fish object (sitting in a variable) must have Update() called on it here
             
             referee.Update();
-            
+            UpdateScore(Team1.TeamScore, Team2.TeamScore);
             foreach (Piranha piranha in piranhas)
             {
                 piranha.Update();
@@ -113,6 +114,11 @@ namespace FishORama
                 kernel.RemoveToken(tokenManager.ChickenLeg);
                 tokenManager.SetChickenLeg(null);
             }
+        }
+
+        private void UpdateScore(int pScore1, int pScore2)
+        {
+            kernel.UpdateScoreText(pScore1, pScore2);
         }
     }
 }
