@@ -15,8 +15,8 @@ public class Referee
 
     private Random _random;
     
-    private List<Piranha> Team1Members;
-    private List<Piranha> Team2Members;
+    private List<FishBehaviour> Team1Members;
+    private List<FishBehaviour> Team2Members;
 
     public delegate void PlaceLeg();
 
@@ -30,8 +30,8 @@ public class Referee
         Team1Members = team1.teamMembers;
         Team2Members = team2.teamMembers;
         Team.AddedScore += ScoreAdded;
-        PiranhaBehaviour.roundTrigger += Game;
-        PiranhaBehaviour.RoundEnd += EndRound;
+        FishBehaviour.roundTrigger += Game;
+        FishBehaviour.RoundEnd += EndRound;
         _random = new Random();
     }
 
@@ -63,7 +63,7 @@ public class Referee
         {
             foreach (var fish in Team1Members)
             {
-                fish.piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Win);
+                fish.SetFishState(FishBehaviour.FishState.Win);
             }
 
             Console.WriteLine("Team 1 wins!");
@@ -74,7 +74,7 @@ public class Referee
         {
             foreach (var fish in Team2Members)
             {
-                fish.piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Win);
+                fish.SetFishState(FishBehaviour.FishState.Win);
             }
 
             Console.WriteLine("Team 2 wins!");
@@ -85,8 +85,8 @@ public class Referee
             isFighting = true;
             Console.WriteLine("Triggered round");
             int randomNumber = new Random().Next(0, 3);
-            Team1Members[randomNumber].piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Chase);
-            Team2Members[randomNumber].piranhaBehaviour.SetFishState(PiranhaBehaviour.FishState.Chase);
+            Team1Members[randomNumber].SetFishState(FishBehaviour.FishState.Chase);
+            Team2Members[randomNumber].SetFishState(FishBehaviour.FishState.Chase);
             Console.WriteLine($"Setting fish {randomNumber + 1} to fight");
         }
     }

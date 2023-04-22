@@ -5,28 +5,28 @@ namespace FishORama;
 
 public class Team
 {
-    public List<Piranha> teamMembers;
+    public readonly List<FishBehaviour> teamMembers;
     public int TeamScore;
-    public int teamNumber;
+    public readonly int teamNumber;
     
     public delegate void ScoreAdded(int team, int fish);
     public static event ScoreAdded AddedScore;
     
     
     
-    public Team(int team)
+    public Team(int pTeamNumber)
     {
-        teamMembers = new List<Piranha>();
-        PiranhaBehaviour.ChickenAte += AddScore;
-        teamNumber = team;
+        teamMembers = new List<FishBehaviour>();
+        FishBehaviour.ChickenAte += AddScore;
+        teamNumber = pTeamNumber;
     }
 
-    private void AddScore(int fish)
+    private void AddScore(int pFishTeamNumber)
     {
-        if (fish == teamNumber)
+        if (pFishTeamNumber == teamNumber)
         {
             TeamScore++;
-            AddedScore(teamNumber, fish);
+            AddedScore(teamNumber, pFishTeamNumber);
         }
     }
 }

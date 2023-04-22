@@ -29,7 +29,7 @@ namespace FishORama
         private Team Team1;
         private Team Team2;
         private Referee referee;
-        private List<Piranha> piranhas;
+        private List<Fish> FishList;
         
         
 
@@ -45,7 +45,7 @@ namespace FishORama
             
             Team1 = new Team(1);
             Team2 = new Team(2);
-            piranhas = new List<Piranha>();
+            FishList = new List<Fish>();
             referee = new Referee(Team1, Team2);
             Referee.LegPlace += PlaceLeg;
         }
@@ -67,18 +67,18 @@ namespace FishORama
                 {
                     initXpos = -300;
                     initYpos = 150 - (150 * (i-3));
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team1);
+                    FishBehaviour currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team1);
                     Team1.teamMembers.Add(currentFish);
-                    piranhas.Add(currentFish);
+                    FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
                 else
                 {
                     initXpos = 300;
                     initYpos = 150 - (150 * i);
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team2);
+                    FishBehaviour currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team2);
                     Team2.teamMembers.Add(currentFish);
-                    piranhas.Add(currentFish);
+                    FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);
                 }
             }
@@ -95,7 +95,7 @@ namespace FishORama
             
             referee.Update();
             UpdateScore(Team1.TeamScore, Team2.TeamScore);
-            foreach (Piranha piranha in piranhas)
+            foreach (Fish piranha in FishList)
             {
                 piranha.Update();
             }

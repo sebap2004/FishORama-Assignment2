@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FishORama;
 
-public class PiranhaBehaviour
+public class FishBehaviour : Fish
 {
     public delegate void AteChicken(int fishNumber);
     public static event AteChicken ChickenAte;
@@ -19,23 +19,21 @@ public class PiranhaBehaviour
     public static event EndRound RoundEnd;
 
     private bool ateAlready;
-    private Piranha piranha;
+    private Fish _fish;
     private FishState currentState;
     private Team team;
     
     
-    public PiranhaBehaviour(Piranha pPiranha, Team pTeam)
+    public FishBehaviour(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber, Team pTeam) : base(pTextureID, pXpos, pYpos, pScreen, pTokenManager, pTeamNumber, pFishNumber, pTeam)
     {
-        piranha = pPiranha;
         team = pTeam;
         currentState = FishState.Idle;
     }
-    
-    public void Update()
+
+    public override void Update()
     {
         Movement();
     }
-
     private Vector2 CalculateDirection(Vector2 startVec, Vector2 endVec)
     {
         Vector2 distanceVector = Vector2.Subtract(endVec, startVec);
@@ -49,11 +47,11 @@ public class PiranhaBehaviour
             switch (currentState)
             {
                 case (FishState.Idle):
-                    // calculate x and y coordinates based on piranha.angle and radius
-                    piranha.xPosition = piranha.idlePosition.X + 10 * (float)Math.Cos(piranha.angle);
-                    piranha.yPosition = piranha.idlePosition.Y + 10 * (float)Math.Sin(piranha.angle);
-                    piranha.angle += 0.05f;
-                    if (piranha.tokenManager.ChickenLeg != null)
+                    // calculate x and y coordinates based on angle and radius
+                    xPosition = idlePosition.X + 10 * (float)Math.Cos(angle);
+                    yPosition = idlePosition.Y + 10 * (float)Math.Sin(angle);
+                    angle += 0.05f;
+                    if (tokenManager.ChickenLeg != null)
                     {
                         roundTrigger();
                     }
@@ -65,46 +63,46 @@ public class PiranhaBehaviour
                     Vector2 currentPosition;
                     Vector2 distanceVector;
                     Vector2 directionVector;
-                    if (piranha.tokenManager.ChickenLeg != null)
+                    if (tokenManager.ChickenLeg != null)
                     {
-                        chickenPosition = new(piranha.tokenManager.ChickenLeg.Position.X, piranha.tokenManager.ChickenLeg.Position.Y);
-                        currentPosition = new(piranha.xPosition, piranha.yPosition);
+                        chickenPosition = new(tokenManager.ChickenLeg.Position.X, tokenManager.ChickenLeg.Position.Y);
+                        currentPosition = new(xPosition, yPosition);
                         distanceVector = CalculateDirection(currentPosition, chickenPosition);
                         directionVector = Vector2.Normalize(distanceVector);
-                        piranha.xPosition += directionVector.X * piranha.speed;
-                        piranha.yPosition += directionVector.Y * piranha.speed;
+                        xPosition += directionVector.X * speed;
+                        yPosition += directionVector.Y * speed;
 
-                        if (distanceVector.Length() < 100 && piranha.tokenManager.ChickenLeg != null && !ateAlready)
+                        if (distanceVector.Length() < 100 && tokenManager.ChickenLeg != null && !ateAlready)
                         {
                             ateAlready = true;
                             SetFishState(FishState.Return);
-                            Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} got the leg!");
+                            Console.WriteLine($"Team {teamNumber} Fish {fishNumber} got the leg!");
                             ChickenAte(team.teamNumber);
-                            piranha.tokenManager.RemoveChickenLeg();
+                            tokenManager.RemoveChickenLeg();
                         }
                     }
                     else
                     {
                         SetFishState(FishState.Return);
-                        piranha.textureID = "Piranha2";
-                        Console.WriteLine($"Team {piranha.teamNumber} Fish {piranha.fishNumber} missed the leg!");
+                        textureID = "Piranha2";
+                        Console.WriteLine($"Team {teamNumber} Fish {fishNumber} missed the leg!");
                     }
                     
                     break;
                 
                 case (FishState.Return):
-                    currentPosition = new(piranha.xPosition, piranha.yPosition);
-                    distanceVector = Vector2.Subtract(piranha.idlePosition, currentPosition);
+                    currentPosition = new(xPosition, yPosition);
+                    distanceVector = CalculateDirection(currentPosition, idlePosition);
                     directionVector = Vector2.Normalize(distanceVector);
-                    piranha.xPosition += directionVector.X * piranha.speed;
-                    piranha.yPosition += directionVector.Y * piranha.speed;
+                    xPosition += directionVector.X * speed;
+                    yPosition += directionVector.Y * speed;
 
                     if (distanceVector.Length() < 5)
                     {
-                        piranha.xPosition = piranha.idlePosition.X;
-                        piranha.yPosition = piranha.idlePosition.Y;
+                        xPosition = idlePosition.X;
+                        yPosition = idlePosition.Y;
                         SetFishState(FishState.Idle);
-                        piranha.calcRand = true;
+                        calcRand = true;
                     }
 
                     ateAlready = false;
@@ -113,17 +111,17 @@ public class PiranhaBehaviour
                     if (team.teamNumber == 1)
                     {
                         directionVector =
-                            Vector2.Normalize(CalculateDirection(new Vector2(piranha.xPosition,piranha.yPosition),
-                                new Vector2(piranha.xPosition,piranha.yPosition) + new Vector2(1200, 0)));
+                            Vector2.Normalize(CalculateDirection(new Vector2(xPosition,yPosition),
+                                new Vector2(xPosition,yPosition) + new Vector2(1200, 0)));
                     }
                     else
                     {
                         directionVector =
-                            Vector2.Normalize(CalculateDirection(new Vector2(piranha.xPosition,piranha.yPosition),
-                                new Vector2(piranha.xPosition,piranha.yPosition) + new Vector2(-1200, 0)));
+                            Vector2.Normalize(CalculateDirection(new Vector2(xPosition,yPosition),
+                                new Vector2(xPosition,yPosition) + new Vector2(-1200, 0)));
                     }
-                    piranha.xPosition += directionVector.X * piranha.speed;
-                    piranha.yPosition += directionVector.Y * piranha.speed;
+                    xPosition += directionVector.X * speed;
+                    yPosition += directionVector.Y * speed;
                     break;
             }
     }
@@ -142,19 +140,19 @@ public class PiranhaBehaviour
         {
             case (FishState.Idle):
                 currentState = FishState.Idle;
-                piranha.textureID = "Piranha1";
+                textureID = "Piranha1";
                 RoundEnd();
                 break;
             case (FishState.Chase):
                 currentState = FishState.Chase;
-                piranha.speed = new Random().Next(4, 6);
+                speed = new Random().Next(4, 6);
                 break;
             case (FishState.Return):
                 currentState = FishState.Return;
                 break;
             case(FishState.Win):
                 currentState = FishState.Win;
-                piranha.speed = 4;
+                speed = 4;
                 break;
         }
     }
