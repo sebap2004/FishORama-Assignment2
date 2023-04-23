@@ -11,7 +11,7 @@ public class FishBehaviour : Fish
     public delegate void AteChicken(int fishNumber);
     public static event AteChicken ChickenAte;
     
-    public delegate void TriggerNewGame();
+    public delegate void TriggerNewGame();  
     public static event TriggerNewGame roundTrigger;
 
     public delegate void EndRound();
