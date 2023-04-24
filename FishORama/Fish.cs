@@ -33,7 +33,6 @@ namespace FishORama
         protected float ySpeed;
         protected Vector2 idlePosition;
         protected float speed;
-        protected bool calcRand;
         protected float angle;
         protected Team team;
         protected Random _random;
@@ -65,7 +64,6 @@ namespace FishORama
             xSpeed = 1;
             ySpeed = xSpeed;
             speed = 3;
-            calcRand = true;
             _random = new Random();
         }
 

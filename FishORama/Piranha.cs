@@ -114,7 +114,6 @@ public class Piranha : Fish
                         xPosition = idlePosition.X;
                         yPosition = idlePosition.Y;
                         SetFishState(FishState.Idle);
-                        calcRand = true;
                     }
 
                     _ateAlready = false;
