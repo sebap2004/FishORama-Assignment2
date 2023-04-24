@@ -9,15 +9,16 @@ public class Team
     public int TeamScore;
     public readonly int teamNumber;
     
+    // Event which 
     public delegate void ScoreAdded(int team, int fish);
-    public static event ScoreAdded AddedScore;
+    public static event ScoreAdded AddedScore; 
     
     
     
     public Team(int pTeamNumber)
     {
         teamMembers = new List<FishBehaviour>();
-        FishBehaviour.ChickenAte += AddScore;
+        FishBehaviour.ChickenAte += AddScore; // Subscribes the AddScore method to the chicken eating fish event, which gets called when a fish eats a chicken.
         teamNumber = pTeamNumber;
     }
 

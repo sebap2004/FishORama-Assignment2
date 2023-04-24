@@ -8,14 +8,14 @@ namespace FishORama;
 
 public class FishBehaviour : Fish
 {
-    public delegate void AteChicken(int fishNumber);
-    public static event AteChicken ChickenAte;
+    // These are events that are used to communicate with other scripts without having to link with each other.
     
+    // Event which gets called when the fish has eaten a chicken, along with its team number that gets sent to the referee.
+    public delegate void AteChicken(int teamNumber);
+    public static event AteChicken ChickenAte;
     public delegate void TriggerNewGame();  
     public static event TriggerNewGame roundTrigger;
-
     public delegate void EndRound();
-
     public static event EndRound RoundEnd;
 
     private bool ateAlready;
