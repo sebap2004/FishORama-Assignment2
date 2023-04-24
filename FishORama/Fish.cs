@@ -36,6 +36,7 @@ namespace FishORama
         protected bool calcRand;
         protected float angle;
         protected Team team;
+        protected Random _random;
 
         /// CONSTRUCTOR: OrangeFish Constructor
         /// The elements in the brackets are PARAMETERS, which will be covered later in the course
@@ -51,25 +52,29 @@ namespace FishORama
             tokenManager = pTokenManager;
 
             // *** ADD OTHER INITIALISATION (class setup) CODE HERE ***
+            
             team = pTeam;
             fishNumber = pFishNumber;
             teamNumber = pTeamNumber;
+            
+            // Flips the sprite based on which team number is parsed.
             if (teamNumber == 1)
-            {
-                xDirection = -1;
-            }
+            { xDirection = -1; }
+            
             idlePosition = new Vector2(pXpos, pYpos);
             xSpeed = 1;
             ySpeed = xSpeed;
             speed = 3;
             calcRand = true;
+            _random = new Random();
         }
 
         /// METHOD: Update - will be called repeatedly by the Update loop in Simulation
         /// Write the movement control code here
         public virtual void Update()
         {
-            
+            // Empty virtual method that will be overridden by inheriting classes
+            // Called by Simulation.
         }
 
         /// METHOD: Draw - Called repeatedly by FishORama engine to draw token on screen

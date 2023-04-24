@@ -67,7 +67,7 @@ namespace FishORama
                 {
                     initXpos = -300;
                     initYpos = 150 - (150 * (i-3));
-                    FishBehaviour currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i-2, Team1);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i-2, Team1);
                     Team1.teamMembers.Add(currentFish);
                     FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);
@@ -76,7 +76,7 @@ namespace FishORama
                 {
                     initXpos = 300;
                     initYpos = 150 - (150 * i);
-                    FishBehaviour currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i+1, Team2);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i+1, Team2);
                     Team2.teamMembers.Add(currentFish);
                     FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);

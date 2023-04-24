@@ -21,9 +21,9 @@ namespace FishORamaEngineLibrary
         private ITokenManager tokenManager;         // Holds a reference to the TokenManager - for access to ChickenLeg variable
         private Camera camera;                      // Every token is drawn in a position relative to this camera
         private Screen screen;                      // Holds screen dimensions (width, height)
-        private SpriteFont font;
-        private int score1;
-        private int score2;
+        private SpriteFont font;                    // Spritefont which has been added into the game's content
+        private int score1;                         // The score of team 1
+        private int score2;                         // The score of team 2
         
         /// PROPERTIES
         public IUpdate Simulation { set => simulation = value; }

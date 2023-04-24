@@ -5,7 +5,7 @@ namespace FishORama;
 
 public class Team
 {
-    public readonly List<FishBehaviour> teamMembers;
+    public readonly List<Piranha> teamMembers;
     public int TeamScore;
     public readonly int teamNumber;
     
@@ -17,8 +17,8 @@ public class Team
     
     public Team(int pTeamNumber)
     {
-        teamMembers = new List<FishBehaviour>();
-        FishBehaviour.ChickenAte += AddScore; // Subscribes the AddScore method to the chicken eating fish event, which gets called when a fish eats a chicken.
+        teamMembers = new List<Piranha>();
+        Piranha.ChickenAte += AddScore; // Subscribes the AddScore method to the chicken eating fish event, which gets called when a fish eats a chicken.
         teamNumber = pTeamNumber;
     }
 
