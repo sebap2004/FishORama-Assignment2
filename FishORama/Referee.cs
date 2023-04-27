@@ -49,6 +49,25 @@ public class Referee
     // Called by an event in the Piranha class. Sets up the fish for the next round.
     void EndRound()
     {
+        if (_team1.TeamScore >= 5)
+        {
+            foreach (Piranha fish in _team1Members)
+            {
+                fish.SetFishState(Piranha.FishState.Win);
+            }
+            _isFighting = true;
+            return;
+        }
+
+        if (_team2.TeamScore >= 5)
+        {
+            foreach (Piranha fish in _team2Members)
+            {
+                fish.SetFishState(Piranha.FishState.Win);
+            }
+            _isFighting = true;
+            return;
+        }
         _isFighting = false;
     }
     
@@ -70,27 +89,6 @@ public class Referee
     // Checks if either team has won, if not trigger a round, if yes then end the game.
     void RoundTrigger()
     {
-        if (_team1.TeamScore >= 5)
-        {
-            foreach (var fish in _team1Members)
-            {
-                fish.SetFishState(Piranha.FishState.Win);
-            }
-
-            Console.WriteLine("Team 1 wins!");
-            return;
-        }
-
-        if (_team2.TeamScore >= 5)
-        {
-            foreach (var fish in _team2Members)
-            {
-                fish.SetFishState(Piranha.FishState.Win);
-            }
-
-            Console.WriteLine("Team 2 wins!");
-            return;
-        }
         if (_tokenManager.ChickenLeg != null)
         {
             _isFighting = true;

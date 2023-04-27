@@ -26,12 +26,16 @@ public class Piranha : Fish
 
     private bool _ateAlready;
     private FishState _currentState;
+    private int spinRadius;
+    private int spinSpeed;
 
 
     public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber, Team pTeam) : base(pTextureID, pXpos, pYpos, pScreen, pTokenManager, pTeamNumber, pFishNumber, pTeam)
     {
         team = pTeam;
         _currentState = FishState.Idle;
+        spinRadius = _random.Next(8, 12);
+        spinSpeed = _random.Next(2, 8);
     }
 
     public override void Update()
@@ -55,9 +59,9 @@ public class Piranha : Fish
             {
                 case (FishState.Idle):
                     // Code for circular movement. If the chicken leg is in the scene, sends the round trigger event.
-                    xPosition = idlePosition.X + 10 * (float)Math.Cos(angle);
-                    yPosition = idlePosition.Y + 10 * (float)Math.Sin(angle);
-                    angle += 0.05f;
+                    xPosition = idlePosition.X + spinRadius * (float)Math.Cos(angle);
+                    yPosition = idlePosition.Y + spinRadius * (float)Math.Sin(angle);
+                    angle += spinSpeed * 0.025f;
                     if (tokenManager.ChickenLeg != null)
                     {
                         roundTrigger();
