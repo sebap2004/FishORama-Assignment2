@@ -26,6 +26,7 @@ namespace FishORama
         // *** ADD YOUR CLASS VARIABLES HERE ***
         // Variables to hold fish will be declared here
 
+        // Team, Referee and List objects are initialised. They are assigned in the Simulation constructor.
         private Team Team1;
         private Team Team2;
         private Referee referee;
@@ -57,7 +58,7 @@ namespace FishORama
             // *** ADD YOUR NEW TOKEN CREATION CODE HERE ***
             // Code to create fish tokens and assign to thier variables goes here
             // Remember to insert each token into the kernel
-
+            
             int initXpos;
             int initYpos;
             
@@ -67,7 +68,7 @@ namespace FishORama
                 {
                     initXpos = -300;
                     initYpos = 150 - (150 * (i-3));
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i-2, Team1);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i-2, Team1);
                     Team1.teamMembers.Add(currentFish);
                     FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);
@@ -76,7 +77,7 @@ namespace FishORama
                 {
                     initXpos = 300;
                     initYpos = 150 - (150 * i);
-                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 1, i+1, Team2);
+                    Piranha currentFish = new("Piranha1", initXpos, initYpos, screen, tokenManager, 2, i+1, Team2);
                     Team2.teamMembers.Add(currentFish);
                     FishList.Add(currentFish);
                     kernel.InsertToken(currentFish);
@@ -101,21 +102,15 @@ namespace FishORama
             }
         }
 
+        // Method that is used to place the leg into the scene. Is called by the referee using an event.
         private void PlaceLeg()
         {
             ChickenLeg newChickenLeg = new ChickenLeg("ChickenLeg", 0, 0);
             tokenManager.SetChickenLeg(newChickenLeg);
             kernel.InsertToken(newChickenLeg);
         }
-        private void RemoveChickenLeg()
-        {
-            if (tokenManager.ChickenLeg != null)
-            {
-                kernel.RemoveToken(tokenManager.ChickenLeg);
-                tokenManager.SetChickenLeg(null);
-            }
-        }
-
+        
+        // Updates the score text for the kernel to display the right score.
         private void UpdateScore(int pScore1, int pScore2)
         {
             kernel.UpdateScoreText(pScore1, pScore2);

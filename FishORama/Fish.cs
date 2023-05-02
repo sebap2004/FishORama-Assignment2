@@ -26,9 +26,8 @@ namespace FishORama
         public ITokenManager tokenManager;     // Holds a reference to the TokenManager - for access to ChickenLeg variable
 
         // *** ADD YOUR CLASS VARIABLES HERE *** 
-        protected int teamNumber;
-        protected int fishNumber;
-        protected float yOffset;
+        protected int teamNumber;                 // Team number, used to show score
+        protected int fishNumber;                 // Fish number used for debugging purposes
         protected float xSpeed;
         protected float ySpeed;
         protected Vector2 idlePosition;
@@ -57,7 +56,7 @@ namespace FishORama
             teamNumber = pTeamNumber;
             
             // Flips the sprite based on which team number is parsed.
-            if (teamNumber == 1)
+            if (teamNumber == 2)
             { xDirection = -1; }
             
             idlePosition = new Vector2(pXpos, pYpos);

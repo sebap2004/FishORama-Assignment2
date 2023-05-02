@@ -12,9 +12,9 @@ public class Referee
     private Team _team2;
     private ITokenManager _tokenManager;
     
-    // Boolean which determines if the fish are fighting or not.
-    private bool _isFighting;
-    private Random _random;
+    private bool _isFighting;   // Boolean which determines if the fish are fighting or not.
+    private Random _random; // Random class used for random calculations
+    private bool gameEnded; // Boolean which determines if the game has ended
     
     // Lists of members for both teams are cached separate from the team object for ease of reading.
     // Assigned in the constructor.
@@ -42,20 +42,21 @@ public class Referee
     // Grabs the token manager from one of the fish and starts the game.
     public void StartGame()
     {
-        _tokenManager = _team1.teamMembers[0].tokenManager; 
+        _tokenManager = _team1.teamMembers[0].tokenManager; // T
         Game();
     }
 
     // Called by an event in the Piranha class. Sets up the fish for the next round.
     void EndRound()
     {
+        // Checks if either of the teams have one, if so then end the game, else set isFighting to false to prepare for next round.
         if (_team1.TeamScore >= 5)
         {
             foreach (Piranha fish in _team1Members)
             {
                 fish.SetFishState(Piranha.FishState.Win);
             }
-            _isFighting = true;
+            gameEnded = true;
             return;
         }
 
@@ -65,17 +66,18 @@ public class Referee
             {
                 fish.SetFishState(Piranha.FishState.Win);
             }
-            _isFighting = true;
+            gameEnded = true;
             return;
         }
         _isFighting = false;
     }
     
     
-    // Checks if the fish are fighting, if they are not fighting then the round is triggered.
+    // Checks if the fish are fighting or if the game has ended, if they are not fighting then the round is triggered.
     private void Game()
     {
         if (_isFighting) { return; }
+        if (gameEnded) {return;}
         RoundTrigger();
     }
 
@@ -86,7 +88,7 @@ public class Referee
     }
 
     
-    // Checks if either team has won, if not trigger a round, if yes then end the game.
+    // Choose a random number between 0 and 2 which corresponds to a certain fish, then makes both of them chase the leg.
     void RoundTrigger()
     {
         if (_tokenManager.ChickenLeg != null)
@@ -101,16 +103,16 @@ public class Referee
     }
 
     
-    // Checks if the fish are fighting, if not then make random checks to place the leg in the scene.
+    // Checks if the fish are fighting or if the game has ended, if not then make random checks to place the leg in the scene.
     public void Update()
     {
         if (_isFighting)
         {return;}
-
+        if (gameEnded)
+        {return;}
         if (_random.Next(0, 101) == 1)
         {
             LegPlace();
-            Console.WriteLine("Placed leg");
             Console.WriteLine("Placed leg");
         }
     }

@@ -24,12 +24,12 @@ public class Piranha : Fish
     public delegate void EndRound();
     public static event EndRound RoundEnd;
 
-    private bool _ateAlready;
-    private FishState _currentState;
-    private int spinRadius;
-    private int spinSpeed;
+    private bool _ateAlready; // Checks if the piranha has eaten already to avoid double scoring.
+    private FishState _currentState; // Stores the current state of the fish. Used in the movement method to determine behavior.
+    private int spinRadius; // The size of the circle that the fish swims in the idle state. Randomised on object creation.
+    private int spinSpeed; // The speed that the fish swims in a circle. Randomised on object creation.
 
-
+    // Constructor that inherits from the fish base class. Passes in the team, sets the fish to idle, and sets the spinSpeed and radius.
     public Piranha(string pTextureID, float pXpos, float pYpos, Screen pScreen, ITokenManager pTokenManager, int pTeamNumber, int pFishNumber, Team pTeam) : base(pTextureID, pXpos, pYpos, pScreen, pTokenManager, pTeamNumber, pFishNumber, pTeam)
     {
         team = pTeam;
@@ -90,7 +90,7 @@ public class Piranha : Fish
                         {
                             _ateAlready = true;
                             SetFishState(FishState.Return);
-                            ChickenAte(team.teamNumber);
+                            ChickenAte(teamNumber);
                             tokenManager.RemoveChickenLeg();
                         }
                     }
